@@ -1,9 +1,11 @@
+import os
+
 from load_data import load_dataset
 
 
 def main():
-
-    file_path = "../data/supply_delivery_history.csv"
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, "..", "data", "supply_delivery_history.csv")
 
     df = load_dataset(file_path)
 
@@ -15,5 +17,5 @@ def main():
         print(df.shape)
 
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     main()
