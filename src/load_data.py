@@ -14,6 +14,11 @@ def load_dataset(file_path):
 
     try:
         df = pd.read_csv(file_path)
+
+        if df.empty:
+            print(f"Error: Dataset loaded but is empty: {file_path}")
+            return None
+
         print("Dataset loaded successfully.")
         return df
 

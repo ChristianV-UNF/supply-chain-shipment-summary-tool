@@ -15,6 +15,8 @@ def main():
 
         print("\nDataset Shape:")
         print(df.shape)
+    else:
+        print("\nNo data available to display. Check whether the dataset path is correct and whether the file contains data.")
 
 
 if __name__ == "__main__":
