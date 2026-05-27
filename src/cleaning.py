@@ -52,15 +52,16 @@ def clean_shipment_data(df):
         "Line Item Insurance (USD)"
     ]
 
-    for column in date_columns:
-        if column in cleaned_df.columns:
-            cleaned_df = clean_date_column(cleaned_df, column)
-
     for column in numeric_columns:
+
         if column in cleaned_df.columns:
             cleaned_df = clean_numeric_column(cleaned_df, column)
+        else:
+            print(f"Warning: Column '{column}' not found in dataset.")
 
+    duplicate_count = cleaned_df.duplicated().sum()
     cleaned_df = cleaned_df.drop_duplicates()
 
+    print(f"\nDuplicate rows removed during cleaning: {duplicate_count}")
 
     return cleaned_df
