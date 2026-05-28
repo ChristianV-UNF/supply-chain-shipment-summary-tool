@@ -2,7 +2,7 @@ import os
 
 from load_data import load_dataset
 from cleaning import clean_shipment_data
-
+from summaries import generate_shipment_summary
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -37,6 +37,10 @@ def main():
 
         print("\nDuplicate Rows After Cleaning:")
         print(cleaned_df.duplicated().sum())
+
+        shipment_summary = generate_shipment_summary(cleaned_df)
+        print("\nShipment Summary Metrics")
+        print(shipment_summary)
 
 
 if __name__ == "__main__":
