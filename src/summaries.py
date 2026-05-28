@@ -1,5 +1,13 @@
 import pandas as pd
 
+def validate_required_columns(df, required_columns):
+    missing_columns = [col for col in required_columns if col not in df.columns]
+
+    if missing_columns:
+        raise ValueError(
+            f"Missing required columns: {', '.join(missing_columns)}"
+        )
+
 def generate_shipment_summary(df: pd.DataFrame) -> dict:
     """
     Generate shipment summary metrics.
@@ -87,3 +95,49 @@ def top_countries_by_value(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
     )
 
     return top_countries
+
+def get_product_group_summary(df):
+    required_columns = [
+        "Product Group",
+        "Line Item Quantity",
+        "Line Item Value"
+    ]
+
+    validate_required_columns(df, required_columns)
+
+    product_summary = (
+        df.groupby("Product Group")
+        .agg(
+            total_shipments=("Product Group", "count"),
+            total_quantity=("Line Item Quantity", "sum"),
+            total_item_value=("Line Item Value", "sum"),
+            average_item_value=("Line Item Value", "mean")
+        )
+        .reset_index()
+        .sort_values(by="total_item_value", ascending=False)
+    )
+
+    return product_summary
+
+def get_shipment_mode_summary(df):
+    required_columns = [
+        "Shipment Mode",
+        "Freight Cost (USD)",
+        "Line Item Value"
+    ]
+
+    validate_required_columns(df, required_columns)
+
+    shipment_mode_summary = (
+        df.groupby("Shipment Mode")
+        .agg(
+            total_shipments=("Shipment Mode", "count"),
+            total_freight_cost=("Freight Cost (USD)", "sum"),
+            average_freight_cost=("Freight Cost (USD)", "mean"),
+            total_item_value=("Line Item Value", "sum")
+        )
+        .reset_index()
+        .sort_values(by="total_shipments", ascending=False)
+    )
+
+    return shipment_mode_summary
