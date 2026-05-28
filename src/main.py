@@ -1,8 +1,19 @@
 import os
+import pandas as pd
 
 from load_data import load_dataset
 from cleaning import clean_shipment_data
-from summaries import generate_shipment_summary
+from summaries import (
+    generate_shipment_summary,
+    summarize_by_country,
+    summarize_by_vendor,
+    top_countries_by_value
+)
+
+pd.set_option("display.float_format", "{:,.2f}".format)
+pd.set_option("display.max_columns", None)
+pd.set_option("display.width", 120)
+
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -41,6 +52,20 @@ def main():
         shipment_summary = generate_shipment_summary(cleaned_df)
         print("\nShipment Summary Metrics")
         print(shipment_summary)
+
+        # US-05: Country and Vendor Summaries
+        country_summary = summarize_by_country(cleaned_df)
+        vendor_summary = summarize_by_vendor(cleaned_df)
+        top_countries = top_countries_by_value(cleaned_df)
+
+        print("\nCountry Shipment Summary")
+        print(country_summary.head(10))
+
+        print("\nVendor Shipment Summary")
+        print(vendor_summary.head(10))
+
+        print("\nTop Countries by Item Value")
+        print(top_countries)
 
 
 if __name__ == "__main__":
