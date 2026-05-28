@@ -35,3 +35,55 @@ def generate_shipment_summary(df: pd.DataFrame) -> dict:
     }
 
     return summary
+
+
+def summarize_by_country(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Generate shipment summaries grouped by destination country.
+    """
+
+    country_summary = (
+        df.groupby("Country")
+        .agg(
+            shipment_count=("Country", "count"),
+            total_item_value=("Line Item Value", "sum")
+        )
+        .reset_index()
+        .sort_values(by="shipment_count", ascending=False)
+    )
+
+    return country_summary
+
+
+def summarize_by_vendor(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Generate shipment summaries grouped by vendor.
+    """
+
+    vendor_summary = (
+        df.groupby("Vendor")
+        .agg(
+            shipment_count=("Vendor", "count"),
+            total_item_value=("Line Item Value", "sum")
+        )
+        .reset_index()
+        .sort_values(by="shipment_count", ascending=False)
+    )
+
+    return vendor_summary
+
+
+def top_countries_by_value(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
+    """
+    Return the top countries ranked by total shipment value.
+    """
+
+    top_countries = (
+        df.groupby("Country")
+        .agg(total_item_value=("Line Item Value", "sum"))
+        .reset_index()
+        .sort_values(by="total_item_value", ascending=False)
+        .head(top_n)
+    )
+
+    return top_countries
