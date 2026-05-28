@@ -11,6 +11,20 @@ def generate_shipment_summary(df: pd.DataFrame) -> dict:
         dict: Shipment summary metrics.
     """
 
+    required_columns = [
+    "Line Item Quantity",
+    "Line Item Value",
+    "Freight Cost (USD)",
+    "Line Item Insurance (USD)"
+    ]
+
+    missing_columns = [col for col in required_columns if col not in df.columns]
+
+    if missing_columns:
+        raise ValueError(
+            f"Missing required columns: {', '.join(missing_columns)}"
+        )
+
     summary = {
         "total_shipments": len(df),
         "total_quantity": df["Line Item Quantity"].sum(),
