@@ -7,7 +7,9 @@ from summaries import (
     generate_shipment_summary,
     summarize_by_country,
     summarize_by_vendor,
-    top_countries_by_value
+    top_countries_by_value,
+    get_product_group_summary, 
+    get_shipment_mode_summary
 )
 
 pd.set_option("display.float_format", "{:,.2f}".format)
@@ -66,6 +68,15 @@ def main():
 
         print("\nTop Countries by Item Value")
         print(top_countries)
+
+        # US-06: Product Group and Shipment Mode Summaries
+        product_group_summary = get_product_group_summary(cleaned_df)
+        print("\nProduct Group Summary:")
+        print(product_group_summary.head())
+
+        shipment_mode_summary = get_shipment_mode_summary(cleaned_df)
+        print("\nShipment Mode Summary:")
+        print(shipment_mode_summary.head())
 
 
 if __name__ == "__main__":
