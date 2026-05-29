@@ -1,6 +1,7 @@
 import os
 
 from load_data import load_dataset
+from visualizations import plot_top_countries, plot_shipment_mode_distribution
 
 
 def main():
@@ -15,6 +16,10 @@ def main():
 
         print("\nDataset Shape:")
         print(df.shape)
+        fig1 = plot_top_countries(df)
+        fig2 = plot_shipment_mode_distribution(df)
+
+        print("\nVisualization functions executed successfully.")
     else:
         print("\nNo data available to display. Check whether the dataset path is correct and whether the file contains data.")
 
