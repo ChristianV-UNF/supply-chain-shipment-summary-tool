@@ -1,51 +1,56 @@
 import matplotlib.pyplot as plt
-import pandas as pd
-def plot_top_countries(df, top_n=10):
+
+
+def plot_top_countries(country_summary, top_n=10):
     """
-    Create a bar chart of the top countries by shipment count.
+    Create a bar chart showing the top countries by shipment count.
 
     Parameters:
-        df (pd.DataFrame): Shipment dataset
-        top_n (int): Number of top countries to display
+        country_summary (DataFrame): Country summary DataFrame.
+        top_n (int): Number of top countries to display.
 
     Returns:
-        matplotlib.figure.Figure
+        matplotlib.figure.Figure: Bar chart figure object.
     """
 
-    country_counts = df["Country"].value_counts().head(top_n)
+    top_data = country_summary.head(top_n)
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    country_counts.plot(kind="bar", ax=ax)
+    ax.bar(top_data["Country"], top_data["shipment_count"])
 
     ax.set_title("Top Countries by Shipment Count")
     ax.set_xlabel("Country")
-    ax.set_ylabel("Number of Shipments")
+    ax.set_ylabel("Shipment Count")
+    ax.tick_params(axis="x", rotation=45)
 
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-
+    fig.tight_layout()
     return fig
+
+
 def plot_shipment_mode_distribution(df):
     """
     Create a bar chart showing shipment mode distribution.
 
     Parameters:
-        df (pd.DataFrame): Shipment dataset
+        df (DataFrame): Cleaned shipment dataset.
 
     Returns:
-        matplotlib.figure.Figure
+        matplotlib.figure.Figure: Bar chart figure object.
     """
 
-    shipment_mode_counts = df["Shipment Mode"].fillna("Unknown").value_counts()
+    shipment_mode_counts = df["Shipment Mode"].value_counts().reset_index()
+    shipment_mode_counts.columns = ["Shipment Mode", "shipment_count"]
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    shipment_mode_counts.plot(kind="bar", ax=ax)
+    ax.bar(
+        shipment_mode_counts["Shipment Mode"],
+        shipment_mode_counts["shipment_count"]
+    )
 
     ax.set_title("Shipment Mode Distribution")
     ax.set_xlabel("Shipment Mode")
-    ax.set_ylabel("Number of Shipments")
+    ax.set_ylabel("Shipment Count")
+    ax.tick_params(axis="x", rotation=45)
 
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-
+    fig.tight_layout()
     return fig
