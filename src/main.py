@@ -2,6 +2,7 @@ import os
 import pandas as pd
 
 from load_data import load_dataset
+from visualizations import plot_top_countries, plot_shipment_mode_distribution
 from cleaning import clean_shipment_data
 from summaries import (
     generate_shipment_summary,
@@ -16,7 +17,6 @@ pd.set_option("display.float_format", "{:,.2f}".format)
 pd.set_option("display.max_columns", None)
 pd.set_option("display.width", 120)
 
-
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, "..", "data", "supply_delivery_history.csv")
@@ -26,6 +26,8 @@ def main():
     if df is not None:
         print("\nOriginal Dataset Shape:")
         print(df.shape)
+    else:
+        print("\nNo data available to display. Check whether the dataset path is correct and whether the file contains data.")
 
         print("\nOriginal Column Types:")
         print(df.dtypes)
@@ -77,6 +79,12 @@ def main():
         shipment_mode_summary = get_shipment_mode_summary(cleaned_df)
         print("\nShipment Mode Summary:")
         print(shipment_mode_summary.head())
+
+        #US-07: Create Visualization Functions
+        fig1 = plot_top_countries(cleaned_df)
+        fig2 = plot_shipment_mode_distribution(cleaned_df)
+
+        print("\nVisualization functions executed successfully.")
 
 
 if __name__ == "__main__":
